@@ -1479,15 +1479,15 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">الاسم</label>
-                                <input type="text" class="form-control" placeholder="اسمك" required>
+                                <input type="text" id="name" class="form-control" placeholder="اسمك" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">رقم الهاتف</label>
-                                <input type="tel" class="form-control" placeholder="01xxxxxxxxx" required>
+                                <input type="tel" id="phone" class="form-control" placeholder="01xxxxxxxxx" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">مستوى القيادة</label>
-                                <select class="form-select">
+                                <select id="level" class="form-select">
                                     <option>مبتدئ تمامًا</option>
                                     <option>لدي خبرة بسيطة</option>
                                     <option>متقدم</option>
@@ -1497,11 +1497,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">المحافظة / المنطقة</label>
-                                <input type="text" class="form-control" placeholder="اكتب المنطقة">
+                                <input type="text" id="region" class="form-control" placeholder="اكتب المنطقة">
                             </div>
                             <div class="col-12">
                                 <label class="form-label">رسالتك</label>
-                                <textarea class="form-control" rows="3"
+                                <textarea id="message" class="form-control" rows="3"
                                     placeholder="اكتب الموعد المناسب أو أي تفاصيل إضافية"></textarea>
                             </div>
                             <div class="col-12">
@@ -1633,12 +1633,28 @@
     <script>
         document.getElementById('bookingForm').addEventListener('submit', function (e) {
             e.preventDefault();
+
+            // قراءة قيم الحقول
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const level = document.getElementById('level').value;
+            const region = document.getElementById('region').value;
+            const message = document.getElementById('message').value;
+
+            // بناء الرسالة
+            const text = `طلب حجز تدريب جديد\nالاسم: ${name}\nرقم الهاتف: ${phone}\nمستوى القيادة: ${level}\nالمحافظة/المنطقة: ${region}\nرسالة: ${message}`;
+
+            // فتح واتساب مع الرسالة الجاهزة
+            const url = `https://wa.me/201203230386?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+
+            // إظهار إشعار تأكيد (اختياري)
             var toast = document.getElementById('toast');
             toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3200);
+
+            // مسح النموذج بعد الإرسال
             this.reset();
-            setTimeout(function () {
-                toast.classList.remove('show');
-            }, 3200);
         });
 
         // إغلاق القائمة الجانبية عند الضغط على أي رابط
